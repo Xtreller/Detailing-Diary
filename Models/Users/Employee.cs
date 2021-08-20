@@ -8,8 +8,8 @@ namespace Detailing_Diary.Models.Users
 {
     public class Employee : IdentityUser
     {
-        public string GarageId { get; set; }
-        public string EmployeerId { get; set; }
+        public Guid GarageId { get; set; }
+        public Guid EmployeerId { get; set; }
         public string Rating { get; set; }
     }
 }
