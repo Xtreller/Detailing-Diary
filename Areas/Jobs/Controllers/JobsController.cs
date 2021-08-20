@@ -1,6 +1,5 @@
-﻿using Detailing_Diary.Services;
-using Detailing_Diary.ViewModels.Input;
-using Microsoft.AspNetCore.Authorization;
+﻿using Detailing_Diary.Areas.Jobs.ViewModels;
+using Detailing_Diary.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -8,47 +7,46 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Detailing_Diary.Controllers.Garages
+namespace Detailing_Diary.Areas.Jobs.Controllers
 {
-    public class GarageController : Controller
+    public class JobsController : Controller
     {
-        private IGarageService garageService;
         private IJobsService jobsService;
 
-        public GarageController(IGarageService garageService,IJobsService jobsService)
+        public JobsController(IJobsService jobsService)
         {
-            this.garageService = garageService;
             this.jobsService = jobsService;
         }
-        // GET: GarageController
-        public ActionResult Garages()
+        // GET: JobsController
+        [HttpGet("CreateJob/{id}")]
+        [Area("Jobs")]
+        public ActionResult CreateJob()
         {
-            ViewBag.Garages = this.garageService.GetGarages();
+            return View();
+        }
+        [HttpPost("CreateJob/{id}")]
+        public ActionResult CreateJob(Guid id,JobInputModel input)
+        {
+            input.garageId = id;
+            this.jobsService.Create(input);
+            return RedirectToAction("Details","Garage" , new { id = id });
+        }
+
+
+        // GET: JobsController/Details/5
+        public ActionResult Details(int id)
+        {
             return View();
         }
 
-        // GET: GarageController/Details/5
-        public ActionResult AddGarage(int id)
+        // GET: JobsController/Create
+        public ActionResult Create()
         {
+
             return View();
-        }
-        [HttpPost]
-        [Authorize]
-        public ActionResult AddGarage(GarageInputModel garage)
-        {
-             this.garageService.AddGarageAsync(garage) ;
-            return RedirectToAction("Garages");
         }
 
-        
-        [HttpGet("Garage/Details/{id}")]
-        public ActionResult GarageDetails(Guid Id) {
-            Console.WriteLine(Id);
-            ViewBag.Jobs = this.jobsService.GetJobsByGarageId(Id).Result.Value;
-            ViewBag.GarageDetails = this.garageService.GetGarage(Id).Value;
-            return View();
-        }
-        // POST: GarageController/Create
+        // POST: JobsController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(IFormCollection collection)
@@ -63,13 +61,13 @@ namespace Detailing_Diary.Controllers.Garages
             }
         }
 
-        // GET: GarageController/Edit/5
+        // GET: JobsController/Edit/5
         public ActionResult Edit(int id)
         {
             return View();
         }
 
-        // POST: GarageController/Edit/5
+        // POST: JobsController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(int id, IFormCollection collection)
@@ -84,13 +82,13 @@ namespace Detailing_Diary.Controllers.Garages
             }
         }
 
-        // GET: GarageController/Delete/5
+        // GET: JobsController/Delete/5
         public ActionResult Delete(int id)
         {
             return View();
         }
 
-        // POST: GarageController/Delete/5
+        // POST: JobsController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Delete(int id, IFormCollection collection)

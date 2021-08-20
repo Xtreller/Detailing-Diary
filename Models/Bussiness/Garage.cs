@@ -19,14 +19,15 @@ namespace Detailing_Diary.Models.Bussiness
         [ForeignKey("OwnerId")]
         public Guid OwnerId { get; set; }
         public Owner Owner { get; set; }
-        public Job[] Jobs { get; set; }
 
         public int Rating{ get; set; }
         public int JobsCount{ get; set; }
         public Employee[] Employees { get; set; }
+        public ICollection<Job> Jobs { get; set; }
         public Garage() {
             Rating = 0;
             JobsCount = 0;
+           
         }
     }
 }

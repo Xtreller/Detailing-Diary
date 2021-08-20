@@ -3,12 +3,12 @@
 @{
     ViewData["Title"] = "GarageDetails";
     var garage = ViewBag.GarageDetails;
+    var jobs = ViewBag.Jobs;
 }
 
 <h1>GarageDetails</h1>
 
 <div>
-    <h4>Garage</h4>
     <hr />
     <div>
         <img className="w-100 h-30"
@@ -17,8 +17,32 @@
         <h2 className="mt-5">@garage.Name</h2>
         <p>Rating:@garage.Rating</p>
     </div>
+
+    @foreach (var job in jobs)
+    {
+        <div class="card mb-4" >
+            <div class="card-header">
+                <strong>@job.Type - @job.DetailName</strong>
+            </div>
+            <div class="card-body container">
+                <div class="row">
+                    <div class="col">
+                        <p class="card-title">Rating: @job.Rating / 10</p>
+                        <p class="card-text">Date: @job.Date.ToShortDateString()</p>
+                    </div>
+                    <div class="col">
+                        <p class="card-text">TimeSpan: @job.TimeSpan</p>
+                    </div>
+                </div>
+
+              
+            </div>
+        </div>
+    }
+
 </div>
 <div>
     <a asp-action="Edit" asp-route-id="@garage.Id">Edit</a> |
+    <a asp-controller="Jobs" asp-action="CreateJob" asp-route-id="@garage.Id">Add Job</a> |
     <a asp-action="Index">Back to List</a>
 </div>

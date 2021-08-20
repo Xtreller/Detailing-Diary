@@ -4,14 +4,16 @@ using Detailing_Diary.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Detailing_Diary.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210820094535_Jobs")]
+    partial class Jobs
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -69,9 +71,6 @@ namespace Detailing_Diary.Data.Migrations
 
                     b.Property<string>("DetailName")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid>("Garage")
-                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid?>("GarageId")
                         .HasColumnType("uniqueidentifier");
@@ -351,7 +350,7 @@ namespace Detailing_Diary.Data.Migrations
 
             modelBuilder.Entity("Detailing_Diary.Models.Bussiness.Job", b =>
                 {
-                    b.HasOne("Detailing_Diary.Models.Bussiness.Garage", null)
+                    b.HasOne("Detailing_Diary.Models.Bussiness.Garage", "Garage")
                         .WithMany("Jobs")
                         .HasForeignKey("GarageId");
                 });

@@ -39,9 +39,9 @@ namespace Detailing_Diary.Services
                 Address = garage.Address,
                 OwnerId = new Guid("28edac52-c09f-48fc-8490-9b4a7ff535d0")
             };
+             this.db.Garages.Add(newGarage);
+             this.db.SaveChanges();
             Console.WriteLine("here " + newGarage.ToString());
-            this.db.Garages.Add(newGarage);
-            this.db.SaveChanges();
 
             return this.GetGarage(newGarage.Id);
         }

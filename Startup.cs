@@ -47,6 +47,8 @@ namespace Detailing_Diary
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddControllersWithViews();
             services.AddScoped<IGarageService, GarageService>();
+            services.AddScoped<IJobsService, JobsService>();
+
             services.AddRazorPages();
         }
 
@@ -74,10 +76,16 @@ namespace Detailing_Diary
 
             app.UseEndpoints(endpoints =>
             {
+                
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapAreaControllerRoute(
+                  name: "Jobs",
+                  areaName: "Jobs",
+                  pattern: "{controller=Home}/{action=Index}");
                 endpoints.MapRazorPages();
+
             });
         }
     }
