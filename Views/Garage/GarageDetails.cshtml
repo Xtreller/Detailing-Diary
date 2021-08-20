@@ -11,18 +11,22 @@
 <div>
     <hr />
     <div>
-        <img className="w-100 h-30"
+        <img class="w-100 "
+             style="height:300px;"
              src="https://www.askideas.com/media/13/Keep-Calm-And-Listen-To-Music-Facebook-Cover-Photo.jpeg"
              alt="cover" />
-        <h2 className="mt-5">@garage.Name</h2>
+        <h2 class="mt-5">@garage.Name</h2>
         <p>Rating:@garage.Rating</p>
     </div>
 
     @foreach (var job in jobs)
     {
-        <div class="card mb-4" >
+        <div class="card mb-4">
             <div class="card-header">
-                <strong>@job.Type - @job.DetailName</strong>
+                <a asp-controller="Jobs" asp-action="Details" asp-route-id="@job.Id">
+
+                    <strong>@job.Type - @job.DetailName</strong>
+                </a>
             </div>
             <div class="card-body container">
                 <div class="row">
@@ -32,10 +36,12 @@
                     </div>
                     <div class="col">
                         <p class="card-text">TimeSpan: @job.TimeSpan</p>
+                        <p class="card-text">Car: @job.ClientCar</p>
+
                     </div>
                 </div>
 
-              
+
             </div>
         </div>
     }

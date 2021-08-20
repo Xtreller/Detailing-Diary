@@ -2,7 +2,7 @@
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 
-<div>
+<div class="p-4">
     @*<h1>Add Job for {this.props.location.state.garage.name}</h1>*@
     <form class="form" method="post" asp-controller="Jobs" asp-action="CreateJob">
         <div class="form-group">
@@ -22,22 +22,27 @@
                    name="detailName"
                    placeholder="Enter part working on ex. Seats,Headlights,Interior." />
         </div>
-        <div class="form-group">
-            <label htmlFor="address">Date</label>
-            <input type="date"
-                   id="time"
-                   name="date"
-                   class="form-control"
-                   required>
+        <div class="row">
+            <div class="form-group col">
+                <label htmlFor="address">Date</label>
+                <input type="date"
+                       id="time"
+                       name="date"
+                       class="form-control"
+                       required>
+            </div>
+            <div class="form-group col">
+                <label htmlFor="address">Time</label>
+                <input type="time"
+                       id="time"
+                       name="timespan"
+                       class="form-control without_ampm"
+                       required>
+            </div>
         </div>
-        <div class="form-group">
-            <label htmlFor="address">Time</label>
-            <input type="time"
-                   id="time"
-                   name="timespan"
-                   class="form-control without_ampm"
-                   required>
-        </div>
+
+
+
         <div class="form-group ">
             <label htmlFor="address">Select Employee</label>
 
@@ -50,7 +55,36 @@
                 <option value="3">Alex</option>
             </select>
         </div>
-
+        <div class="bg bg-light p-4">
+            <h3>Client Details</h3>
+            <div class="row">
+                <div class="form-group col">
+                    <label htmlFor="address">First Name</label>
+                    <input type="text"
+                           id="ClientFirstName"
+                           name="ClientFirstName"
+                           class="form-control"
+                           required>
+                </div>
+                <div class="form-group col">
+                    <label htmlFor="address">Last Name</label>
+                    <input type="text"
+                           id="clientlastename"
+                           name="clientlastname"
+                           class="form-control without_ampm"
+                           required>
+                </div>
+            </div>
+            <div class="form-group ">
+                <label htmlFor="address">Car</label>
+                <input type="text"
+                       id="clientcar"
+                       name="clientcar"
+                       class="form-control without_ampm"
+                       placeholder="Make,Model,Registration"
+                       required>
+            </div>
+        </div>
         <button type="submit" class="btn btn-primary mt-3">
             Submit
         </button>

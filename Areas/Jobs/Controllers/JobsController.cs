@@ -25,41 +25,23 @@ namespace Detailing_Diary.Areas.Jobs.Controllers
             return View();
         }
         [HttpPost("CreateJob/{id}")]
-        public ActionResult CreateJob(Guid id,JobInputModel input)
+        public ActionResult CreateJob(Guid id, JobInputModel input)
         {
             input.garageId = id;
             this.jobsService.Create(input);
-            return RedirectToAction("Details","Garage" , new { id = id });
+            return RedirectToAction("Details", "Garage", new { id = id });
         }
 
 
         // GET: JobsController/Details/5
-        public ActionResult Details(int id)
+        [Area("Jobs")]
+        [HttpGet("Jobs/Details/{id}")]
+        public ActionResult Details(Guid id)
         {
+            ViewBag.job = this.jobsService.GetJobByIdAsync(id).Result.Value;
             return View();
         }
 
-        // GET: JobsController/Create
-        public ActionResult Create()
-        {
-
-            return View();
-        }
-
-        // POST: JobsController/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
 
         // GET: JobsController/Edit/5
         public ActionResult Edit(int id)

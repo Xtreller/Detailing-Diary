@@ -34,12 +34,15 @@ namespace Detailing_Diary.Services
             TimeSpan ts = job.TimeSpan;
             var newJob = new Job()
             {
-                Name = job.Name,
                 DetailName = job.DetailName,
                 Date = DateTime.Now,
                 TimeSpan = job.TimeSpan,
                 Type = job.Type,
-                Garage = job.garageId
+                Garage = job.garageId,
+                ClientFirstName = job.ClientFirstName,
+                ClientLastName = job.ClientLastName,
+                ClientCar = job.ClientCar
+
 
             };
 
