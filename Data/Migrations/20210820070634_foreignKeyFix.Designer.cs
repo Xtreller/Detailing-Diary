@@ -4,14 +4,16 @@ using Detailing_Diary.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Detailing_Diary.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210820070634_foreignKeyFix")]
+    partial class foreignKeyFix
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -31,9 +33,6 @@ namespace Detailing_Diary.Data.Migrations
                     b.Property<string>("ClientId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("JobsCount")
-                        .HasColumnType("int");
-
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
@@ -42,9 +41,6 @@ namespace Detailing_Diary.Data.Migrations
 
                     b.Property<string>("OwnerId1")
                         .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("Rating")
-                        .HasColumnType("int");
 
                     b.Property<string>("Town")
                         .HasColumnType("nvarchar(max)");

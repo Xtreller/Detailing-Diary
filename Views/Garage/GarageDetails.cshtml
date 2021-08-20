@@ -1,0 +1,24 @@
+﻿@model Detailing_Diary.Models.Bussiness.Garage
+
+@{
+    ViewData["Title"] = "GarageDetails";
+    var garage = ViewBag.GarageDetails;
+}
+
+<h1>GarageDetails</h1>
+
+<div>
+    <h4>Garage</h4>
+    <hr />
+    <div>
+        <img className="w-100 h-30"
+             src="https://www.askideas.com/media/13/Keep-Calm-And-Listen-To-Music-Facebook-Cover-Photo.jpeg"
+             alt="cover" />
+        <h2 className="mt-5">@garage.Name</h2>
+        <p>Rating:@garage.Rating</p>
+    </div>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@garage.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

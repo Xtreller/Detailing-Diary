@@ -1,0 +1,42 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    ViewBag.Title = "Garages";
+    var garages = ViewBag.Garages;
+}
+
+<h1>
+    Garages
+</h1>
+<a class="nav-link text-dark" asp-area="" asp-controller="Garage" asp-action="AddGarage">Add Garage &rarr;</a>
+@foreach (var garage in garages)
+{
+
+    <div class="card mb-4" key={garage.id}>
+        <div class="card-header">
+            <strong>@garage.Name</strong>
+        </div>
+        <div class="card-body container">
+            <div class="row">
+                <div class="col">
+                    <p class="card-title">Town: @garage.Town</p>
+                    <p class="card-text">Address: @garage.Address</p>
+                </div>
+                <div class="col">
+                    <p class="card-text">Done Jobs: @garage.JobsCount</p>
+                    <p class="card-text">Rating: @garage.Rating /10</p>
+                </div>
+            </div>
+
+            <a class="btn btn-primary mr-4" asp-action="Details" asp-route-id="@garage.Id">
+                Details
+            </a>
+            <a class="btn btn-primary">
+             
+                Jobs
+            </a>
+        </div>
+    </div>
+}
+
