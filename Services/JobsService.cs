@@ -32,13 +32,14 @@ namespace Detailing_Diary.Services
         public async Task<ActionResult<Job>> Create(JobInputModel job)
         {
             TimeSpan ts = job.TimeSpan;
+            var garage = this.db.Garages.Find(job.garageId);
             var newJob = new Job()
             {
                 DetailName = job.DetailName,
                 Date = DateTime.Now,
                 TimeSpan = job.TimeSpan,
                 Type = job.Type,
-                Garage = job.garageId,
+                Garage = garage,
                 ClientFirstName = job.ClientFirstName,
                 ClientLastName = job.ClientLastName,
                 ClientCar = job.ClientCar
@@ -52,9 +53,10 @@ namespace Detailing_Diary.Services
 
         }
 
-        public Task<ActionResult> DeleteJob(Guid jobId)
+        public void DeleteJob(Guid id)
         {
-            throw new NotImplementedException();
+            var job = this.db.Jobs.Find(id);
+            this.db.Jobs.Remove(job);
         }
 
 
@@ -70,7 +72,7 @@ namespace Detailing_Diary.Services
 
         public async Task<ActionResult<IEnumerable<Job>>> GetJobsByGarageId(Guid garageId)
         {
-            return await this.db.Jobs.Where(j => j.Garage == garageId).ToListAsync();
+            return await this.db.Jobs.Where(j=>j.Garage.Id == garageId).ToListAsync();
         }
 
 

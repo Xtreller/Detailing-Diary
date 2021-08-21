@@ -15,15 +15,19 @@ namespace Detailing_Diary.Data
         {
 
         }
-        
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<Garage>().HasMany(g => g.Jobs).WithOne(j => j.Garage).OnDelete(DeleteBehavior.Cascade);
+        }
 
-        public DbSet<Owner> Owners{ get; set; }
-        public DbSet<Employee> Employees{ get; set; }
-        public DbSet<Client> Clients{ get; set; }
-        public DbSet<Garage> Garages{ get; set; }
-        public DbSet<Job> Jobs{ get; set; }
+        public DbSet<Owner> Owners { get; set; }
+        public DbSet<Employee> Employees { get; set; }
+        public DbSet<Client> Clients { get; set; }
+        public DbSet<Garage> Garages { get; set; }
+        public DbSet<Job> Jobs { get; set; }
 
-        
+
 
     }
 }

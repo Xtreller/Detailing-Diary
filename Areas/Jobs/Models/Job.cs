@@ -7,6 +7,11 @@ namespace Detailing_Diary.Models.Bussiness
 {
     public class Job
     {
+        public Job()
+        {
+            Rating = 0;
+
+        }
         [Key]
         public Guid Id { get; set; }
         public string Name { get; set; }
@@ -18,7 +23,8 @@ namespace Detailing_Diary.Models.Bussiness
         public string ClientLastName { get; set; }
         public string ClientCar { get; set; }
         public string Type { get; set; }
-        [ForeignKey("GarageId")]
-        public Guid Garage { get; set; }
+   
+
+        public virtual Garage Garage { get; set; }
     }
 }

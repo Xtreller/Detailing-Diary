@@ -15,14 +15,21 @@ namespace Detailing_Diary.Services
 {
     public class GarageService : IGarageService
     {
+        private readonly IHttpContextAccessor httpAccessor;
         private readonly UserManager<IdentityUser> userManager;
         private readonly SignInManager<IdentityUser> signInManager;
         private readonly ApplicationDbContext db;
 
         public ClaimsPrincipal User { get; private set; }
 
-        public GarageService(ApplicationDbContext dbContext, SignInManager<IdentityUser> signInManager, UserManager<IdentityUser> userManager)
+        public GarageService(ApplicationDbContext dbContext,
+            SignInManager<IdentityUser> signInManager,
+            UserManager<IdentityUser> userManager, IHttpContextAccessor
+            httpContextAccessor)
         {
+
+            this.httpAccessor = httpContextAccessor;
+
             this.userManager = userManager;
             this.signInManager = signInManager;
             this.db = dbContext;
@@ -30,35 +37,49 @@ namespace Detailing_Diary.Services
 
         public async Task<ActionResult<Garage>> AddGarageAsync(GarageInputModel garage)
         {
-            //var user = await userManager.GetUserAsync();
+            var userId = this.httpAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+            //Console.WriteLine(userId);
+            ////var user = await userManager.GetUserAsync();
             var newGarage = new Garage()
             {
                 Id = Guid.NewGuid(),
                 Name = garage.Name,
                 Town = garage.Town,
                 Address = garage.Address,
-                OwnerId = new Guid("28edac52-c09f-48fc-8490-9b4a7ff535d0")
+                OwnerId = new Guid(userId),
+                CreatedAt = DateTime.Now
             };
-             this.db.Garages.Add(newGarage);
-             this.db.SaveChanges();
-            Console.WriteLine("here " + newGarage.ToString());
+            await this.db.Garages.AddAsync(newGarage);
+            this.db.SaveChanges();
+            //Console.WriteLine("here " + newGarage.ToString());
 
             return this.GetGarage(newGarage.Id);
         }
 
-        public ActionResult<Garage> DeleteGarage(Guid id)
+        public void DeleteGarage(Guid id)
         {
-            throw new NotImplementedException();
+            var garage = this.db.Garages.Find(id);
+            this.db.Garages.Remove(garage);
+            this.db.SaveChanges();
         }
 
         public ActionResult<Garage> EditGarage(GarageInputModel garage)
         {
-            throw new NotImplementedException();
+            var garageToUpdate = this.db.Garages.Where(g => g.Id == garage.Id).FirstOrDefault();
+
+            garageToUpdate.Name = garage.Name;
+            garageToUpdate.Town = garage.Town;
+            garageToUpdate.Address = garage.Address;
+
+            this.db.SaveChanges();
+            return this.GetGarage(garage.Id);
         }
 
         public IEnumerable<Garage> GetGarages()
         {
-            return this.db.Garages.ToList();
+            return this.db.Garages.ToList().OrderByDescending(g => g.CreatedAt);
+
         }
 
         public ActionResult<Garage> GetGarage(Guid id)

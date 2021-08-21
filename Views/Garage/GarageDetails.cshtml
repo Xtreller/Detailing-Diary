@@ -49,6 +49,9 @@
 </div>
 <div>
     <a asp-action="Edit" asp-route-id="@garage.Id">Edit</a> |
+    <form method="post" asp-controller="Garage" asp-action="Delete" asp-route-id="@garage.Id">
+        <button type="submit">Delete</button>
+    </form>|
     <a asp-controller="Jobs" asp-action="CreateJob" asp-route-id="@garage.Id">Add Job</a> |
     <a asp-action="Index">Back to List</a>
 </div>

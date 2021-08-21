@@ -15,7 +15,7 @@ namespace Detailing_Diary.Controllers.Garages
         private IGarageService garageService;
         private IJobsService jobsService;
 
-        public GarageController(IGarageService garageService,IJobsService jobsService)
+        public GarageController(IGarageService garageService, IJobsService jobsService)
         {
             this.garageService = garageService;
             this.jobsService = jobsService;
@@ -36,13 +36,14 @@ namespace Detailing_Diary.Controllers.Garages
         [Authorize]
         public ActionResult AddGarage(GarageInputModel garage)
         {
-             this.garageService.AddGarageAsync(garage) ;
+            this.garageService.AddGarageAsync(garage);
             return RedirectToAction("Garages");
         }
 
-        
+
         [HttpGet("Garage/Details/{id}")]
-        public ActionResult GarageDetails(Guid Id) {
+        public ActionResult GarageDetails(Guid Id)
+        {
             Console.WriteLine(Id);
             ViewBag.Jobs = this.jobsService.GetJobsByGarageId(Id).Result.Value;
             ViewBag.GarageDetails = this.garageService.GetGarage(Id).Value;
@@ -64,35 +65,36 @@ namespace Detailing_Diary.Controllers.Garages
         }
 
         // GET: GarageController/Edit/5
-        public ActionResult Edit(int id)
+        [HttpGet("Garage/Edit/{id}")]
+        public ActionResult Edit(Guid id)
         {
-            return View();
+
+            ViewBag.garage = this.garageService.GetGarage(id).Value;
+            return View("EditGarage");
         }
 
         // POST: GarageController/Edit/5
-        [HttpPost]
+        [HttpPost("Garage/Edit/{id}")]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public ActionResult EditGarage(Guid id, GarageInputModel garage)
         {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            garage.Id = id;
+            Console.WriteLine("garage Edit");
+            this.garageService.EditGarage(garage);
+            return RedirectToAction("Details", new { id = id });
         }
 
         // GET: GarageController/Delete/5
-        public ActionResult Delete(int id)
+        [HttpPost("Garage/Delete/{id}")]
+        [ValidateAntiForgeryToken]
+        public ActionResult Delete(Guid id)
         {
-            return View();
+            this.garageService.DeleteGarage(id);
+            return RedirectToAction("Garages");
         }
 
         // POST: GarageController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
+        
         public ActionResult Delete(int id, IFormCollection collection)
         {
             try

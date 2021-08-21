@@ -10,6 +10,32 @@ namespace Detailing_Diary.Models.Bussiness
 {
     public class Garage
     {
+        //public class Student
+        //{
+        //    public int StudentId { get; set; }
+        //    public string StudentName { get; set; }
+
+        //    public virtual Standard Standard { get; set; }
+        //}
+
+        //public class Standard
+        //{
+        //    public Standard()
+        //    {
+        //        Students = new List<Student>();
+        //    }
+        //    public int StandardId { get; set; }
+        //    public string Description { get; set; }
+
+        //    public virtual ICollection<Student> Students { get; set; }
+        //}
+        public Garage()
+        {
+            Rating = 0;
+            JobsCount = 0;
+            Jobs = new List<Job>();
+
+        }
         [Key]
         public Guid Id { get; set; }
         public string Name { get; set; }
@@ -20,14 +46,11 @@ namespace Detailing_Diary.Models.Bussiness
         public Guid OwnerId { get; set; }
         public Owner Owner { get; set; }
 
-        public int Rating{ get; set; }
-        public int JobsCount{ get; set; }
+        public int Rating { get; set; }
+        public int JobsCount { get; set; }
         public Employee[] Employees { get; set; }
-        public ICollection<Job> Jobs { get; set; }
-        public Garage() {
-            Rating = 0;
-            JobsCount = 0;
-           
-        }
+        public virtual ICollection<Job> Jobs { get; set; }
+        public DateTime CreatedAt { get; set; }
+       
     }
 }

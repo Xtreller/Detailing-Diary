@@ -1,0 +1,45 @@
+﻿@model Detailing_Diary.Models.Bussiness.Garage
+
+@{
+    ViewData["Title"] = "Edit Garage";
+    var garage = ViewBag.garage;
+}
+
+<h4>Edit Garage</h4>
+<hr />
+<div class="  d-flex justify-content-center align-self-center">
+    <div class="w-75 ">
+        <form class="form" method="POST"   asp-action="Edit" asp-controller="Garage" asp-route-id="@garage.Id" >
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control w-100" value="@garage.Name" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Town" class="control-label"></label>
+                <input asp-for="Town" class="form-control" value="@garage.Town" />
+                <span asp-validation-for="Town" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Address" class="control-label"></label>
+                <input asp-for="Address" class="form-control" value="@garage.Address" />
+                <span asp-validation-for="Address" class="text-danger"></span>
+            </div>
+
+
+            <div class="form-group">
+                <button class="btn btn-primary">Submit</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Garages">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

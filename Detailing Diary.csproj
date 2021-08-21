@@ -10,6 +10,14 @@
   <ItemGroup>
     <Compile Remove="Data\Migrations\20210820065317_foreignKeyFix.cs" />
     <Compile Remove="Data\Migrations\20210820065317_foreignKeyFix.Designer.cs" />
+    <Compile Remove="Data\Migrations\20210821082918_CascadeDeletion.cs" />
+    <Compile Remove="Data\Migrations\20210821082918_CascadeDeletion.Designer.cs" />
+    <Compile Remove="Data\Migrations\20210821083112_CascadeDeletion.cs" />
+    <Compile Remove="Data\Migrations\20210821083112_CascadeDeletion.Designer.cs" />
+    <Compile Remove="Data\Migrations\20210821083507_CascadeDeletion.cs" />
+    <Compile Remove="Data\Migrations\20210821083507_CascadeDeletion.Designer.cs" />
+    <Compile Remove="Data\Migrations\20210821083946_CascadeDeletion.cs" />
+    <Compile Remove="Data\Migrations\20210821083946_CascadeDeletion.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
