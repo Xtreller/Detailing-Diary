@@ -1,12 +1,9 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
-@model Detailing_Diary.Models.Bussiness.Garage
+﻿
+@model Detailing_Diary.Models.Bussiness.Job
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
 @{
-    ViewData["Title"] = "GarageDetails";
+    ViewData["Title"] = "Job Deatils";
     var job = ViewBag.job;
     var pictures = new string[3] { "https://i.pinimg.com/236x/a5/d9/f0/a5d9f0b17f1dc03d2719d2e787461798--protein-solution.jpg",
                 "https://cdn.shopify.com/s/files/1/3010/7250/products/Tornado-Car-Washer-P11_large.jpg?v=1547473666",
@@ -35,8 +32,23 @@
 
 
 </div>
-<div class="mt-5 mr-auto">
-    <a asp-action="Edit" asp-route-id="@job.Id">Edit</a> |
-    <a asp-controller="Jobs" asp-action="CreateJob" asp-route-id="@job.Id">Add Job</a> |
-    <a asp-action="Index">Back to List</a>
+<div class="mt-5 mrg-auto   text-center ">
+    <div class="w-100 row d-flex justify-content-center align-content-center">
+        <div class="col">
+            <div class="row">
+                <a class="btn btn-primary col-md-2" asp-action="Edit" asp-route-id="@job.Id">Edit</a>
+
+                <form method="POST" class="col-md-3" asp-action="Delete" asp-controller="Jobs" asp-route-id="@job.Id">
+                    <button type="submit" class="btn btn-danger col">Delete</button>
+                </form>
+            </div>
+        </div>
+        <div class="col">
+            <div class="row">
+                <a class="col nav-link" asp-controller="Jobs" asp-action="CreateJob" asp-route-id="@job.Id">Add Job</a>
+                <a class="col nav-link" asp-action="Index">Back to List</a>
+            </div>
+
+        </div>
+    </div>
 </div>

@@ -20,10 +20,9 @@ namespace Detailing_Diary.Controllers.Garages
             this.garageService = garageService;
             this.jobsService = jobsService;
         }
-        // GET: GarageController
-        public ActionResult Garages()
+        public ActionResult Garages()       
         {
-            ViewBag.Garages = this.garageService.GetGarages();
+            ViewBag.Garages =  this.garageService.GetGarages();
             return View();
         }
 
@@ -93,18 +92,7 @@ namespace Detailing_Diary.Controllers.Garages
             return RedirectToAction("Garages");
         }
 
-        // POST: GarageController/Delete/5
         
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
+    
     }
 }

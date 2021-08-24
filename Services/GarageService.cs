@@ -1,4 +1,5 @@
 ﻿using Detailing_Diary.Data;
+using Detailing_Diary.Models;
 using Detailing_Diary.Models.Bussiness;
 using Detailing_Diary.Models.Users;
 using Detailing_Diary.ViewModels.Input;
@@ -24,12 +25,11 @@ namespace Detailing_Diary.Services
 
         public GarageService(ApplicationDbContext dbContext,
             SignInManager<IdentityUser> signInManager,
-            UserManager<IdentityUser> userManager, IHttpContextAccessor
-            httpContextAccessor)
+            UserManager<IdentityUser> userManager,
+            IHttpContextAccessor httpContextAccessor)
         {
 
             this.httpAccessor = httpContextAccessor;
-
             this.userManager = userManager;
             this.signInManager = signInManager;
             this.db = dbContext;
@@ -38,21 +38,20 @@ namespace Detailing_Diary.Services
         public async Task<ActionResult<Garage>> AddGarageAsync(GarageInputModel garage)
         {
             var userId = this.httpAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var owner = this.db.Owners.Where(o=>o.User.Id == userId).FirstOrDefault();
+            Console.WriteLine("garageOWnerId: " + owner);
 
-            //Console.WriteLine(userId);
-            ////var user = await userManager.GetUserAsync();
             var newGarage = new Garage()
             {
                 Id = Guid.NewGuid(),
                 Name = garage.Name,
                 Town = garage.Town,
                 Address = garage.Address,
-                OwnerId = new Guid(userId),
+                Owner = owner,
                 CreatedAt = DateTime.Now
             };
             await this.db.Garages.AddAsync(newGarage);
             this.db.SaveChanges();
-            //Console.WriteLine("here " + newGarage.ToString());
 
             return this.GetGarage(newGarage.Id);
         }

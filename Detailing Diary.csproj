@@ -18,6 +18,18 @@
     <Compile Remove="Data\Migrations\20210821083507_CascadeDeletion.Designer.cs" />
     <Compile Remove="Data\Migrations\20210821083946_CascadeDeletion.cs" />
     <Compile Remove="Data\Migrations\20210821083946_CascadeDeletion.Designer.cs" />
+    <Compile Remove="Data\Migrations\20210823191315_Emp2.cs" />
+    <Compile Remove="Data\Migrations\20210823191315_Emp2.Designer.cs" />
+    <Compile Remove="Data\Migrations\20210823191701_Emp2.cs" />
+    <Compile Remove="Data\Migrations\20210823191701_Emp2.Designer.cs" />
+    <Compile Remove="Data\Migrations\20210823191924_Emp2.cs" />
+    <Compile Remove="Data\Migrations\20210823191924_Emp2.Designer.cs" />
+    <Compile Remove="Data\Migrations\20210823192052_Emp2.cs" />
+    <Compile Remove="Data\Migrations\20210823192052_Emp2.Designer.cs" />
+    <Compile Remove="Data\Migrations\20210823192559_init.cs" />
+    <Compile Remove="Data\Migrations\20210823192559_init.Designer.cs" />
+    <Compile Remove="Data\Migrations\20210823192822_init.cs" />
+    <Compile Remove="Data\Migrations\20210823192822_init.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -33,6 +45,8 @@
 
   <ItemGroup>
     <Folder Include="Areas\Jobs\Data\" />
+    <Folder Include="Areas\Manager\Data\" />
+    <Folder Include="Areas\Manager\Models\" />
   </ItemGroup>
 
 </Project>

@@ -39,50 +39,41 @@ namespace Detailing_Diary.Areas.Jobs.Controllers
         public ActionResult Details(Guid id)
         {
             ViewBag.job = this.jobsService.GetJobByIdAsync(id).Result.Value;
+
             return View();
         }
 
 
         // GET: JobsController/Edit/5
-        public ActionResult Edit(int id)
+        [Area("Jobs")]
+        [HttpGet("Jobs/Edit/{id}")]
+        public ActionResult Edit(Guid id)
         {
-            return View();
+            ViewBag.job = this.jobsService.GetJobByIdAsync(id).Result.Value;
+            return View("EditJob");
         }
 
         // POST: JobsController/Edit/5
-        [HttpPost]
+        [HttpPost("Jobs/Edit/{id}")]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public ActionResult Edit(Guid id, JobInputModel input)
         {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            Console.WriteLine(input.Employee);
+            this.jobsService.EditJob(id, input);
+            return RedirectToAction("Details", "Jobs", new { id = id });
         }
 
-        // GET: JobsController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
+
 
         // POST: JobsController/Delete/5
-        [HttpPost]
+        [HttpPost("Jobs/Delete/{id}")]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public ActionResult Delete(Guid id)
         {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            this.jobsService.DeleteJob(id);
+
+            return RedirectToAction("Garages", "Garage", new { id = id });
+
         }
     }
 }

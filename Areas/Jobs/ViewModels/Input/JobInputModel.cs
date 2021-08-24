@@ -21,7 +21,7 @@ namespace Detailing_Diary.Areas.Jobs.ViewModels
         public string ClientFirstName { get; set; }
         public string ClientLastName { get; set; }
         public string ClientCar { get; set; }
-        
+        public string Employee { get; set; }
         public Guid garageId { get; set; }
     }
 }

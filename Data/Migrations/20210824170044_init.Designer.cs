@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Detailing_Diary.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210820070634_foreignKeyFix")]
-    partial class foreignKeyFix
+    [Migration("20210824170044_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -33,14 +33,20 @@ namespace Detailing_Diary.Data.Migrations
                     b.Property<string>("ClientId")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("JobsCount")
+                        .HasColumnType("int");
+
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("OwnerId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("OwnerId1")
+                    b.Property<string>("OwnerId")
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("Rating")
+                        .HasColumnType("int");
 
                     b.Property<string>("Town")
                         .HasColumnType("nvarchar(max)");
@@ -49,7 +55,9 @@ namespace Detailing_Diary.Data.Migrations
 
                     b.HasIndex("ClientId");
 
-                    b.HasIndex("OwnerId1");
+                    b.HasIndex("OwnerId")
+                        .IsUnique()
+                        .HasFilter("[OwnerId] IS NOT NULL");
 
                     b.ToTable("Garages");
                 });
@@ -60,14 +68,69 @@ namespace Detailing_Diary.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("ClientCar")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ClientFirstName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ClientLastName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DetailName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("EmployeeId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<Guid?>("GarageId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Rating")
+                        .HasColumnType("int");
+
+                    b.Property<TimeSpan>("TimeSpan")
+                        .HasColumnType("time");
+
+                    b.Property<string>("Type")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("EmployeeId");
 
                     b.HasIndex("GarageId");
 
                     b.ToTable("Jobs");
+                });
+
+            modelBuilder.Entity("Detailing_Diary.Models.Bussiness.Review", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Content")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ReviewerId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ReviewerId");
+
+                    b.ToTable("Reviews");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -287,21 +350,19 @@ namespace Detailing_Diary.Data.Migrations
                 {
                     b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
 
-                    b.Property<Guid>("EmployeerId")
+                    b.Property<string>("FirstName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid?>("GarageId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("GarageId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("OwnerId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<string>("LastName")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Rating")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasIndex("GarageId");
-
-                    b.HasIndex("OwnerId");
 
                     b.HasDiscriminator().HasValue("Employee");
                 });
@@ -316,19 +377,31 @@ namespace Detailing_Diary.Data.Migrations
             modelBuilder.Entity("Detailing_Diary.Models.Bussiness.Garage", b =>
                 {
                     b.HasOne("Detailing_Diary.Models.Users.Client", null)
-                        .WithMany("Favorite")
+                        .WithMany("Favorites")
                         .HasForeignKey("ClientId");
 
                     b.HasOne("Detailing_Diary.Models.Users.Owner", "Owner")
-                        .WithMany()
-                        .HasForeignKey("OwnerId1");
+                        .WithOne("Garage")
+                        .HasForeignKey("Detailing_Diary.Models.Bussiness.Garage", "OwnerId");
                 });
 
             modelBuilder.Entity("Detailing_Diary.Models.Bussiness.Job", b =>
                 {
-                    b.HasOne("Detailing_Diary.Models.Bussiness.Garage", null)
+                    b.HasOne("Detailing_Diary.Models.Users.Employee", "Employee")
+                        .WithMany()
+                        .HasForeignKey("EmployeeId");
+
+                    b.HasOne("Detailing_Diary.Models.Bussiness.Garage", "Garage")
                         .WithMany("Jobs")
-                        .HasForeignKey("GarageId");
+                        .HasForeignKey("GarageId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Detailing_Diary.Models.Bussiness.Review", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "Reviewer")
+                        .WithMany()
+                        .HasForeignKey("ReviewerId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -384,15 +457,10 @@ namespace Detailing_Diary.Data.Migrations
 
             modelBuilder.Entity("Detailing_Diary.Models.Users.Employee", b =>
                 {
-                    b.HasOne("Detailing_Diary.Models.Bussiness.Garage", null)
+                    b.HasOne("Detailing_Diary.Models.Bussiness.Garage", "Garage")
                         .WithMany("Employees")
                         .HasForeignKey("GarageId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Detailing_Diary.Models.Users.Owner", null)
-                        .WithMany("Employees")
-                        .HasForeignKey("OwnerId");
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
         }

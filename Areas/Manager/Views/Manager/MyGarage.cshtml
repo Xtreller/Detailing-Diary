@@ -1,0 +1,93 @@
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    var garage = ViewBag.Garage;
+}
+
+@model Detailing_Diary.Models.Bussiness.Garage
+
+
+<h1>GarageDetails</h1>
+<h2 class="mt-5">@garage.Name</h2>
+<h2 class="mt-5">Emlpoyees</h2>
+<table class="table">
+    <tr class="row">
+        <th class="col">First Name</th>
+        <th class="col">Last Name </th>
+        <th class="col">Rating</th>
+    </tr>
+    @foreach (var employee in garage.Employees)
+    {
+        <tr class="row">
+            <td class="col">@employee.FirstName</td>
+            <td class="col">@employee.LastName</td>
+            <td class="col">@employee.Rating / 10</td>
+        </tr>
+
+    }
+    
+    <tr>
+        <td>
+        </td>
+    </tr>
+</table>
+<form asp-action="AddEmployee" asp-route-id="@garage.Id" method="post" id="employee-form" style="display:none;width:100%;">
+    <div class="form-group row ">
+        <div class="col-md-8">
+            <input type="email" class="form-control" id="email" aria-describedby="email" name="employeeEmail" placeholder="Enter email">
+        </div>
+        <div class="col-md-2">
+            <button type="submit" class="btn-primary btn">Add </button>
+        </div>
+    </div>
+</form>
+<button onclick="showForm()" class="btn-primary btn">Add-Employee </button>
+
+
+@*<div>
+        <hr />
+        <div>
+            <img class="w-100 "
+                 style="height:300px;"
+                 src="https://www.askideas.com/media/13/Keep-Calm-And-Listen-To-Music-Facebook-Cover-Photo.jpeg"
+                 alt="cover" />
+            <p>Rating:@data.Garage.Rating</p>
+        </div>
+
+        @foreach (var job in data.Employees)
+        {
+            <div class="card mb-4">
+                <div class="card-header">
+                    <a asp-controller="Jobs" asp-action="Details" asp-route-id="@job.Id">
+
+                        <strong>@job.Type - @job.DetailName</strong>
+                    </a>
+                </div>
+                <div class="card-body container">
+                    <div class="row">
+                        <div class="col">
+                            <p class="card-title">Rating: @job.Rating / 10</p>
+                            <p class="card-text">Date: @job.Date.ToShortDateString()</p>
+                        </div>
+                        <div class="col">
+                            <p class="card-text">TimeSpan: @job.TimeSpan</p>
+                            <p class="card-text">Car: @job.ClientCar</p>
+
+                        </div>
+                    </div>
+
+
+
+                </div>
+            </div>
+        }
+
+    </div>
+    <div>
+        <a asp-action="Edit" asp-route-id="@data.Garage.Id">Edit</a> |
+        <form method="post" asp-controller="Garage" asp-action="Delete" asp-route-id="@data.Garage.Id">
+            <button type="submit">Delete</button>
+        </form>|
+        <a asp-controller="Jobs" asp-action="CreateJob" asp-route-id="@data.Garage.Id">Add Job</a> |
+        <a asp-action="Index">Back to List</a>
+    </div>*@

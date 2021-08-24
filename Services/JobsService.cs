@@ -1,5 +1,6 @@
 ﻿using Detailing_Diary.Areas.Jobs.ViewModels;
 using Detailing_Diary.Data;
+using Detailing_Diary.Models;
 using Detailing_Diary.Models.Bussiness;
 using Detailing_Diary.Models.Users;
 using Microsoft.AspNetCore.Identity;
@@ -16,7 +17,7 @@ namespace Detailing_Diary.Services
     {
         private ApplicationDbContext db;
         private SignInManager<IdentityUser> signInManager;
-        private object userManager;
+        private UserManager<IdentityUser> userManager;
         private IGarageService garageService;
 
         public JobsService(ApplicationDbContext dbContext,
@@ -33,17 +34,19 @@ namespace Detailing_Diary.Services
         {
             TimeSpan ts = job.TimeSpan;
             var garage = this.db.Garages.Find(job.garageId);
+            garage.JobsCount = garage.JobsCount + 1;
+            var employee = this.db.Employees.Where(e => e.Garage == garage).Where(e => e.FirstName == job.Employee).FirstOrDefault();
             var newJob = new Job()
             {
                 DetailName = job.DetailName,
-                Date = DateTime.Now,
+                Date = job.Date,
                 TimeSpan = job.TimeSpan,
                 Type = job.Type,
                 Garage = garage,
+                Employee = employee,
                 ClientFirstName = job.ClientFirstName,
                 ClientLastName = job.ClientLastName,
                 ClientCar = job.ClientCar
-
 
             };
 
@@ -57,22 +60,43 @@ namespace Detailing_Diary.Services
         {
             var job = this.db.Jobs.Find(id);
             this.db.Jobs.Remove(job);
+            this.db.SaveChanges();
         }
 
 
-        public Task<ActionResult> EditJob(JobInputModel job)
+        public async Task<ActionResult<Job>> EditJob(Guid Id, JobInputModel job)
         {
-            throw new NotImplementedException();
+
+
+            var jobToUpdate = this.db.Jobs.Find(Id);
+            var employee = this.db.Employees.Find(job.Employee);
+            Console.WriteLine("employee: ");
+
+            if (employee == null)
+            {
+                Console.WriteLine("Employee not Found");
+            }
+            jobToUpdate.DetailName = job.DetailName;
+            jobToUpdate.Date = job.Date;
+            jobToUpdate.TimeSpan = job.TimeSpan;
+            jobToUpdate.Type = job.Type;
+            jobToUpdate.Employee = employee;
+            jobToUpdate.ClientFirstName = job.ClientFirstName;
+            jobToUpdate.ClientLastName = job.ClientLastName;
+            jobToUpdate.ClientCar = job.ClientCar;
+            this.db.SaveChanges();
+            return await this.GetJobByIdAsync(jobToUpdate.Id);
         }
 
         public async Task<ActionResult<Job>> GetJobByIdAsync(Guid jobId)
         {
+
             return await this.db.Jobs.Where(g => g.Id == jobId).FirstOrDefaultAsync();
         }
 
         public async Task<ActionResult<IEnumerable<Job>>> GetJobsByGarageId(Guid garageId)
         {
-            return await this.db.Jobs.Where(j=>j.Garage.Id == garageId).ToListAsync();
+            return await this.db.Jobs.Where(j => j.Garage.Id == garageId).ToListAsync();
         }
 
 

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Detailing_Diary.Models.Users;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -23,8 +24,8 @@ namespace Detailing_Diary.Models.Bussiness
         public string ClientLastName { get; set; }
         public string ClientCar { get; set; }
         public string Type { get; set; }
-   
 
+        public virtual Employee Employee { get; set; }
         public virtual Garage Garage { get; set; }
     }
 }

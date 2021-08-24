@@ -15,7 +15,7 @@ namespace Detailing_Diary.Services
         Task<ActionResult<IEnumerable<Job>>> GetJobsByGarageId(Guid garageId);
         Task<ActionResult<Job>> GetJobByIdAsync(Guid jobId);
         void DeleteJob(Guid jobId);
-        Task<ActionResult> EditJob(JobInputModel job);
+        Task<ActionResult<Job>> EditJob(Guid Id ,JobInputModel job);
         Task<ActionResult> Rate(Guid jobId,int rate);
         
         

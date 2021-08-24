@@ -1,4 +1,5 @@
 using Detailing_Diary.Data;
+using Detailing_Diary.Models;
 using Detailing_Diary.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -48,6 +49,7 @@ namespace Detailing_Diary
             services.AddControllersWithViews();
             services.AddScoped<IGarageService, GarageService>();
             services.AddScoped<IJobsService, JobsService>();
+            services.AddScoped<IManagerService, ManagerService>();
 
             services.AddRazorPages();
         }
@@ -59,6 +61,7 @@ namespace Detailing_Diary
             {
                 app.UseDeveloperExceptionPage();
                 app.UseDatabaseErrorPage();
+
             }
             else
             {

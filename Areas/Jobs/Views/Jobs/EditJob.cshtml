@@ -1,10 +1,18 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model Detailing_Diary.Models.Bussiness.Job
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
+@{
+    ViewData["Title"] = "EditJob";
+    var job = ViewBag.job;
+}
+
+<h1>EditJob</h1>
+
+<h4>Job</h4>
+<hr />
 <div class="p-4">
     @*<h1>Add Job for {this.props.location.state.garage.name}</h1>*@
-    <form class="form" method="post" asp-controller="Jobs" asp-action="CreateJob">
+    <form class="form" method="post" asp-controller="Jobs" asp-action="Edit" asp-route-id="@job.Id">
         <div class="form-group">
             <label htmlFor="Name">Job Type</label>
             <input type="text"
@@ -12,6 +20,7 @@
                    id="type"
                    name="type"
                    aria-describedby="type"
+                   value="@job.Type"
                    placeholder="Type of Job ex. Detailing, Polishing , Deep Cleaning." />
         </div>
         <div class="form-group">
@@ -20,15 +29,17 @@
                    class="form-control"
                    id="part"
                    name="detailName"
+                   value="@job.DetailName"
                    placeholder="Enter part working on ex. Seats,Headlights,Interior." />
         </div>
         <div class="row">
             <div class="form-group col">
-                <label htmlFor="address">Date</label>
+                <label htmlFor="address">@job.Date.ToShortDateString()</label>
                 <input type="date"
                        id="time"
                        name="date"
                        class="form-control"
+                       value="@job.Date"
                        required>
             </div>
             <div class="form-group col">
@@ -36,6 +47,7 @@
                 <input type="time"
                        id="time"
                        name="timespan"
+                       value="@job.TimeSpan"
                        class="form-control without_ampm"
                        required>
             </div>
@@ -46,13 +58,13 @@
         <div class="form-group ">
             <label htmlFor="address">Select Employee</label>
 
-            <select class="form-control" aria-label="Default select example" name="Employee">
-                <option selected disabled>
-                    Choose Employee
+            <select class="form-control" aria-label="Default select example">
+                <option selected disabled value="@job.Employee">
+                    
                 </option>
-                <option value="1">Ivan</option>
-                <option value="2">Georgi</option>
-                <option value="3">Alex</option>
+                <option value="28edac52-c09f-48fc-8490-9b4a7ff535d0">Ivan</option>
+                <option value="28edac52-c09f-48fc-8490-9b4a7ff535d0">Georgi</option>
+                <option value="28edac52-c09f-48fc-8490-9b4a7ff535d0">Alex</option>
             </select>
         </div>
         <div class="bg bg-light p-4">
@@ -64,6 +76,7 @@
                            id="ClientFirstName"
                            name="ClientFirstName"
                            class="form-control"
+                           value="@job.ClientFirstName"
                            required>
                 </div>
                 <div class="form-group col">
@@ -71,6 +84,7 @@
                     <input type="text"
                            id="clientlastename"
                            name="clientlastname"
+                           value="@job.ClientLastName"
                            class="form-control without_ampm"
                            required>
                 </div>
@@ -81,6 +95,7 @@
                        id="clientcar"
                        name="clientcar"
                        class="form-control without_ampm"
+                       value="@job.ClientCar"
                        placeholder="Make,Model,Registration"
                        required>
             </div>
@@ -90,3 +105,8 @@
         </button>
     </form>
 </div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
