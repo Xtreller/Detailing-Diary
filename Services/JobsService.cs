@@ -16,14 +16,14 @@ namespace Detailing_Diary.Services
     public class JobsService : IJobsService
     {
         private ApplicationDbContext db;
-        private SignInManager<IdentityUser> signInManager;
-        private UserManager<IdentityUser> userManager;
+        private SignInManager<ApplicationUser> signInManager;
+        private UserManager<ApplicationUser> userManager;
         private IGarageService garageService;
 
         public JobsService(ApplicationDbContext dbContext,
             IGarageService garageService,
-            UserManager<IdentityUser> userManager,
-            SignInManager<IdentityUser> signInManager)
+            UserManager<ApplicationUser> userManager,
+            SignInManager<ApplicationUser> signInManager)
         {
             this.userManager = userManager;
             this.db = dbContext;

@@ -17,15 +17,15 @@ namespace Detailing_Diary.Services
     public class GarageService : IGarageService
     {
         private readonly IHttpContextAccessor httpAccessor;
-        private readonly UserManager<IdentityUser> userManager;
-        private readonly SignInManager<IdentityUser> signInManager;
+        private readonly UserManager<ApplicationUser> userManager;
+        private readonly SignInManager<ApplicationUser> signInManager;
         private readonly ApplicationDbContext db;
 
         public ClaimsPrincipal User { get; private set; }
 
         public GarageService(ApplicationDbContext dbContext,
-            SignInManager<IdentityUser> signInManager,
-            UserManager<IdentityUser> userManager,
+            SignInManager<ApplicationUser> signInManager,
+            UserManager<ApplicationUser> userManager,
             IHttpContextAccessor httpContextAccessor)
         {
 

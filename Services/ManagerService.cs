@@ -19,16 +19,16 @@ namespace Detailing_Diary.Services
     {
         private IHttpContextAccessor httpAccessor;
         private ApplicationDbContext db;
-        private SignInManager<IdentityUser> signInManager;
-        private UserManager<IdentityUser> userManager;
+        private SignInManager<ApplicationUser> signInManager;
+        private UserManager<ApplicationUser> userManager;
         private string userId;
 
         //public ClaimsPrincipal User { get; private set; }
 
         public ManagerService(ApplicationDbContext dbContext,
-            UserManager<IdentityUser> userManager,
+            UserManager<ApplicationUser> userManager,
            IHttpContextAccessor httpContextAccessor,
-            SignInManager<IdentityUser> signInManager)
+            SignInManager<ApplicationUser> signInManager)
         {
             this.httpAccessor = httpContextAccessor;
             this.db = dbContext;
@@ -42,15 +42,27 @@ namespace Detailing_Diary.Services
 
         public async Task<ActionResult<Garage>> AddEmployee(Guid garageId, string email)
         {
-            //var ownerId = this.userManager.GetUserId(User);
-            //Console.WriteLine(garageId);
-            var employee =  await this.db.Employees.FindAsync(Guid.Parse("7e17d2c8-d6e3-430c-bbd0-a1e94c2352ed"));
-            var garage = this.db.Garages.Where(g => g.Id == garageId).Include("Employees").FirstOrDefault();
+            var user = await this.db.Users.Where(u => u.Email == email).FirstOrDefaultAsync();
+            //var employee = await this.db.Employees.Add();
+            //var garage = 
+            var garage = await this.db.Garages.FindAsync(garageId);
+            if (garage == null)
+            {
+                Console.WriteLine($"Garage {garageId} Not Found!");
+                return null;
+            };
 
-            Console.WriteLine("AddEmployeeGarage: " + employee.Id);
-            garage.Employees.Add(employee);
-            employee.Garage = garage;
+            Employee newEmployee = new Employee()
+            {
+                Id = user.Id,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Garage = garage
+            };
+            garage.Employees.Add(newEmployee);
+            this.db.Employees.Add(newEmployee);
             this.db.SaveChanges();
+          
 
             return garage;
 

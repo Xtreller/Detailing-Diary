@@ -35,7 +35,7 @@ namespace Detailing_Diary
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
             services.AddSingleton<HttpContextAccessor>();
-            services.AddDefaultIdentity<IdentityUser>(options =>
+            services.AddDefaultIdentity<ApplicationUser>(options =>
             {
                 options.SignIn.RequireConfirmedAccount = false;
                 options.Password.RequireDigit = false;
@@ -44,7 +44,7 @@ namespace Detailing_Diary
                 options.Password.RequireUppercase = false;
                 options.Password.RequiredLength = 6;
             })
-                .AddRoles<IdentityRole>()
+                .AddRoles<ApplicationRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddControllersWithViews();
             services.AddScoped<IGarageService, GarageService>();

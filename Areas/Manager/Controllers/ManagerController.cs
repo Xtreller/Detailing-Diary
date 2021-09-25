@@ -1,4 +1,5 @@
-﻿using Detailing_Diary.Services;
+﻿using Detailing_Diary.Models;
+using Detailing_Diary.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -11,10 +12,10 @@ namespace Detailing_Diary.Areas.Manager.Controllers
 {
     public class ManagerController : Controller
     {
-        private UserManager<IdentityUser> userManager;
+        private UserManager<ApplicationUser> userManager;
         private IManagerService managerService;
 
-        public ManagerController(IManagerService managerService, UserManager<IdentityUser> userManager)
+        public ManagerController(IManagerService managerService, UserManager<ApplicationUser> userManager)
         {
             this.userManager = userManager;
             this.managerService = managerService;
@@ -47,10 +48,11 @@ namespace Detailing_Diary.Areas.Manager.Controllers
         [HttpPost("Manager/AddEmployee/{id}")]
         public async Task<IActionResult> PostAddEmployee(Guid id, string employeeEmail)
         {
-            Console.WriteLine("managerController: " + employeeEmail);
+            Console.WriteLine("Add employee email: " + employeeEmail);
             var userId = userManager.GetUserId(User);
-
+            
             await this.managerService.AddEmployee(id, employeeEmail);
+            
             return RedirectToAction("MyGarage", "Manager", new { id = userId });
         }
 
