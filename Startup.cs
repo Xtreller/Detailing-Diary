@@ -49,8 +49,9 @@ namespace Detailing_Diary
             services.AddControllersWithViews();
             services.AddScoped<IGarageService, GarageService>();
             services.AddScoped<IJobsService, JobsService>();
-            services.AddScoped<IManagerService, ManagerService>();
-
+            services.AddScoped<IManagerService, ManagerService>(); 
+            services.AddHttpContextAccessor();
+            services.AddControllers();
             services.AddRazorPages();
         }
 

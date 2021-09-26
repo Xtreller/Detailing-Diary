@@ -6,6 +6,7 @@ using Detailing_Diary.ViewModels.Input;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -38,8 +39,27 @@ namespace Detailing_Diary.Services
         public async Task<ActionResult<Garage>> AddGarageAsync(GarageInputModel garage)
         {
             var userId = this.httpAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            var owner = this.db.Owners.Where(o=>o.User.Id == userId).FirstOrDefault();
-            Console.WriteLine("garageOWnerId: " + owner);
+            Console.WriteLine(userId);
+            var user = this.db.Users.Where(u=>u.Id == Guid.Parse(userId)).FirstOrDefault();
+            Console.WriteLine("test");
+            var owner = this.db.Owners.Where(o => o.User.Id == user.Id).FirstOrDefault();
+            Console.WriteLine("test2");
+            Console.WriteLine(user.FirstName);
+            Console.WriteLine("test3");
+            if (owner == null) 
+            {
+                owner = new Owner
+                {
+                    Id = user.Id,
+                    User = user 
+                };
+                 this.db.Owners.Add(owner);
+                Console.WriteLine(owner.Id);
+            }
+            
+            
+            Console.WriteLine("userId: " + owner.Id);
+
 
             var newGarage = new Garage()
             {
@@ -83,7 +103,9 @@ namespace Detailing_Diary.Services
 
         public ActionResult<Garage> GetGarage(Guid id)
         {
-            return this.db.Garages.Where(g => g.Id == id).FirstOrDefault();
+            var garage = this.db.Garages.Where(g => g.Id == id).Include("Owner").FirstOrDefault();
+            Console.WriteLine(garage.Owner);
+            return garage;
         }
     }
 }

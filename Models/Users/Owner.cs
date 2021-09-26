@@ -13,7 +13,8 @@ namespace Detailing_Diary.Models.Users
     {
         [Key]
         public Guid Id { get; set; }
-        public IdentityUser User { get; set; }
+        public ApplicationUser User { get; set; }
+        
         public virtual  Garage Garage { get; set; }
 
     }

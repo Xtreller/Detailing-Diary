@@ -1,9 +1,13 @@
-﻿@model Detailing_Diary.Models.Bussiness.Garage
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+@model Detailing_Diary.Models.Bussiness.Garage
 
 @{
     ViewData["Title"] = "GarageDetails";
     var garage = ViewBag.GarageDetails;
     var jobs = ViewBag.Jobs;
+
 }
 
 <h1>GarageDetails</h1>
@@ -47,11 +51,42 @@
     }
 
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@garage.Id">Edit</a> |
-    <form method="post" asp-controller="Garage" asp-action="Delete" asp-route-id="@garage.Id">
-        <button type="submit">Delete</button>
-    </form>|
+@*<div>
+
+    @if (garage.Owner.Id.ToString() == UserManager.GetUserId(User))
+    {
+
+        <a asp-action="Edit" asp-route-id="@garage.Id" class="btn btn-primary">Edit</a>
+        <form method="post" asp-controller="Garage" asp-action="Delete" asp-route-id="@garage.Id">
+            <button class="btn btn-danger" type="submit ">Delete</button>
+        </form>
+    }
+
     <a asp-controller="Jobs" asp-action="CreateJob" asp-route-id="@garage.Id">Add Job</a> |
     <a asp-action="Index">Back to List</a>
+</div>*@
+<div class="mt-5 mrg-auto   text-center ">
+    <div class="w-100 row d-flex justify-content-center align-content-center">
+        @if (garage.Owner.Id.ToString() == UserManager.GetUserId(User))
+        {
+            <div class="col">
+                <div class="row">
+                    <a class="btn btn-primary col-md-2" asp-action="Edit" asp-route-id="@garage.Id">Edit</a>
+
+                    <form method="POST" class="col-md-3" asp-action="Delete" asp-controller="Jobs" asp-route-id="@garage.Id">
+                        <button type="submit" class="btn btn-danger col">Delete</button>
+                    </form>
+                </div>
+
+            </div>
+        }
+
+        <div class="col">
+            <div class="row ">
+                <a class="col-sm-3 btn btn-primary mr-3" asp-controller="Jobs" asp-action="CreateJob" asp-route-id="@garage.Id">Add Job</a>  
+                <a class="col-sm-3 btn btn-primary" asp-action="Garages">Back to List</a>
+            </div>
+
+        </div>
+    </div>
 </div>

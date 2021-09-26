@@ -45,6 +45,11 @@ namespace Detailing_Diary.Services
             var user = await this.db.Users.Where(u => u.Email == email).FirstOrDefaultAsync();
             //var employee = await this.db.Employees.Add();
             //var garage = 
+            if (user == null) 
+            {
+                Console.WriteLine($"Employee {garageId} Not Found!");
+                return null;
+            }
             var garage = await this.db.Garages.FindAsync(garageId);
             if (garage == null)
             {
@@ -52,13 +57,14 @@ namespace Detailing_Diary.Services
                 return null;
             };
 
+
             Employee newEmployee = new Employee()
             {
                 Id = user.Id,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 Garage = garage
-            };
+             };
             garage.Employees.Add(newEmployee);
             this.db.Employees.Add(newEmployee);
             this.db.SaveChanges();
@@ -97,14 +103,18 @@ namespace Detailing_Diary.Services
         public async Task<ActionResult<Garage>> RemoveEmployee(Guid EmployeeId)
         {
             Console.WriteLine(EmployeeId);
-            var user = await this.db.Owners.FindAsync(this.userId);
+            var user = await this.db.Owners.FindAsync(Guid.Parse(this.userId));
 
+            Console.WriteLine("user" + user == null);
             var garage = await this.db.Garages.Where(g => g.Owner == user).FirstOrDefaultAsync();
+            Console.WriteLine("garage: " + garage.Id);
             var employee = await this.db.Employees.FindAsync(EmployeeId);
+            Console.WriteLine("employee: " + employee.Id);
+            
 
+            garage.Employees.Remove(employee);
+            this.db.SaveChanges();
 
-            garage.Employees.ToList().Remove(employee);
-            await this.db.SaveChangesAsync();
             return garage;
         }
     }

@@ -48,12 +48,22 @@ namespace Detailing_Diary.Areas.Manager.Controllers
         [HttpPost("Manager/AddEmployee/{id}")]
         public async Task<IActionResult> PostAddEmployee(Guid id, string employeeEmail)
         {
-            Console.WriteLine("Add employee email: " + employeeEmail);
             var userId = userManager.GetUserId(User);
-            
-            await this.managerService.AddEmployee(id, employeeEmail);
-            
+
+            var add = await this.managerService.AddEmployee(id, employeeEmail);
+
             return RedirectToAction("MyGarage", "Manager", new { id = userId });
+        }
+        [Area("Manager")]
+        [HttpGet("Manager/RemoveEmployee/{id}")]
+        public async Task<IActionResult> RemoveEmployee(Guid id)
+        {
+            await this.managerService.RemoveEmployee(id);
+            var userId = userManager.GetUserId(User);
+
+            return RedirectToAction("MyGarage", "Manager", new { id = userId });
+
+
         }
 
     }

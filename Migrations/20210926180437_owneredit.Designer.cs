@@ -4,14 +4,16 @@ using Detailing_Diary.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Detailing_Diary.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210926180437_owneredit")]
+    partial class owneredit
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -145,9 +147,6 @@ namespace Detailing_Diary.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid?>("OwnerId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<int>("Rating")
                         .HasColumnType("int");
 
@@ -157,10 +156,6 @@ namespace Detailing_Diary.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("ClientId");
-
-                    b.HasIndex("OwnerId")
-                        .IsUnique()
-                        .HasFilter("[OwnerId] IS NOT NULL");
 
                     b.ToTable("Garages");
                 });
@@ -288,10 +283,17 @@ namespace Detailing_Diary.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid?>("GarageId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<Guid?>("UserId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("GarageId")
+                        .IsUnique()
+                        .HasFilter("[GarageId] IS NOT NULL");
 
                     b.HasIndex("UserId");
 
@@ -467,10 +469,6 @@ namespace Detailing_Diary.Migrations
                     b.HasOne("Detailing_Diary.Models.Users.Client", null)
                         .WithMany("Favorites")
                         .HasForeignKey("ClientId");
-
-                    b.HasOne("Detailing_Diary.Models.Users.Owner", "Owner")
-                        .WithOne("Garage")
-                        .HasForeignKey("Detailing_Diary.Models.Bussiness.Garage", "OwnerId");
                 });
 
             modelBuilder.Entity("Detailing_Diary.Models.Bussiness.Job", b =>
@@ -513,6 +511,10 @@ namespace Detailing_Diary.Migrations
 
             modelBuilder.Entity("Detailing_Diary.Models.Users.Owner", b =>
                 {
+                    b.HasOne("Detailing_Diary.Models.Bussiness.Garage", "Garage")
+                        .WithOne("Owner")
+                        .HasForeignKey("Detailing_Diary.Models.Users.Owner", "GarageId");
+
                     b.HasOne("Detailing_Diary.Models.ApplicationUser", "User")
                         .WithMany()
                         .HasForeignKey("UserId");

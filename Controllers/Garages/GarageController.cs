@@ -20,9 +20,11 @@ namespace Detailing_Diary.Controllers.Garages
             this.garageService = garageService;
             this.jobsService = jobsService;
         }
-        public ActionResult Garages()       
+        public ActionResult Garages()
         {
-            ViewBag.Garages =  this.garageService.GetGarages();
+            ViewBag.Garages = this.garageService.GetGarages().ToList();
+            ViewBag.Count = this.garageService.GetGarages().ToList().Count;
+
             return View();
         }
 
@@ -35,7 +37,9 @@ namespace Detailing_Diary.Controllers.Garages
         [Authorize]
         public ActionResult AddGarage(GarageInputModel garage)
         {
+            Console.WriteLine("star wars");
             this.garageService.AddGarageAsync(garage);
+
             return RedirectToAction("Garages");
         }
 
@@ -43,9 +47,9 @@ namespace Detailing_Diary.Controllers.Garages
         [HttpGet("Garage/Details/{id}")]
         public ActionResult GarageDetails(Guid Id)
         {
-            Console.WriteLine(Id);
             ViewBag.Jobs = this.jobsService.GetJobsByGarageId(Id).Result.Value;
             ViewBag.GarageDetails = this.garageService.GetGarage(Id).Value;
+
             return View();
         }
         // POST: GarageController/Create
@@ -92,7 +96,7 @@ namespace Detailing_Diary.Controllers.Garages
             return RedirectToAction("Garages");
         }
 
-        
-    
+
+
     }
 }
